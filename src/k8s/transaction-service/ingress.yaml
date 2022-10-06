@@ -2,14 +2,18 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: transactionservice-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
 spec:
+  ingressClassName: nginx
   rules:
-    - http:
-        paths:
-          - path: /api/transactionservice
-            pathType: Prefix
-            backend:
-              service:
-                name: transactionservice-svc
-                port:
-                  number: 8080
+  - http:
+      paths:
+      - path: /transactionservice(/|$)(.*)
+        pathType: Prefix
+        backend:
+          service:
+            name: transactionservice-svc
+            port: 
+              number: 8080
