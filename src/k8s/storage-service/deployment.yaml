@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment                             # Deployment - це конфігурація Kubernetes, що дозволяє описувати бажаний стан системи і являє собою набір з декількох однакових Pod без унікальних ідентифікаційних даних.Також в Deployments можна задаати стратегії оновлення подів 
+metadata:
+  name: storageservice-deployment
+spec:
+  replicas: 3                                # кількість екземплярів Pod, що буде створено цим Deployment
+  selector:
+    matchLabels:
+      app: storageservice                # селектор по якому Deployment зв'язаний з Pod
+  template:
+    metadata:
+     labels:
+       app: storageservice               # мітка Pod по якому вона буде зв'язана з Deployment та Service
+    spec:
+      containers:
+        - image: zozuliuk22/storageservice:0.1
+          name: storageservice           # ім'я контейнеру
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 80
+            initialDelaySeconds: 20
+            periodSeconds: 20
+          ports:
+            - containerPort: 80              # порт по якому можна звертатись до поди
