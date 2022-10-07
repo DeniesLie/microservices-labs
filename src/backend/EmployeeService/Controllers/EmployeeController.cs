@@ -10,7 +10,7 @@ namespace EmployeeService.Controllers
         [HttpGet("{id:int}")]
         public EmployeeGetDto Get(int id)
         {
-            return new EmployeeGetDto() {Id = id, Lastname = "Daun", Name = "Artem", PhoneNumber = "123456789"};
+            return new EmployeeGetDto() {Id = id, Lastname = "Stankov", Name = "Artem", PhoneNumber = "123456789"};
         }
 
         [HttpGet("GetByStorage/{storageId:int}")]
@@ -18,7 +18,7 @@ namespace EmployeeService.Controllers
         {
             return new List<EmployeeGetDto>()
             {
-                new() {Id = 12, Lastname = "Daun", Name = "Artem", PhoneNumber = "123456789"}
+                new() {Id = 12, Lastname = "Stankov", Name = "Artem", PhoneNumber = "123456789"}
             };
         }
 
