@@ -10,7 +10,7 @@ spec:
   rules:
   - http:
       paths:
-      - path: /transactionservice(/|$)(.*)
+      - path: /api/transactionservice(/|$)(.*)
         pathType: Prefix
         backend:
           service:
