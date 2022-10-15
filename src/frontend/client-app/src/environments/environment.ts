@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiUrl: "http://microserviceslabs"
+  apiUrl: "http://microserviceslabs/api"
 };
 
 /*
