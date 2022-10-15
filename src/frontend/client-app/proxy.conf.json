@@ -1,6 +1,6 @@
 {
     "/api": {
-      "target": "http://microserviceslabs",
+      "target": "http://microserviceslabs/api",
       "secure": true,
       "changeOrigin": true,
       "pathRewrite": {
