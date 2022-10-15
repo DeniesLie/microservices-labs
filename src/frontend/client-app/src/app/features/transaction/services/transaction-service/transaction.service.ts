@@ -21,7 +21,7 @@ export class TransactionService {
   ) { }
 
   getAll(): Observable<Transaction[]> {
-    const url = `http://localhost:4200/api/transactionservice/api/transactions`; 
+    const url = `${environment.apiUrl}/transactionservice/api/transactions`; 
     return this._httpClient.get<Transaction[]>(url).pipe(
       catchError(err => this.handleError('get messages', err))
     )

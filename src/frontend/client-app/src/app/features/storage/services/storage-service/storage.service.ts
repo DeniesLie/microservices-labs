@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, Observable, throwError } from 'rxjs';
 import { StorageModel } from 'src/app/core/entities/storage';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,7 @@ export class StorageService {
     ) { }
   
     getAll(): Observable<StorageModel[]> {
-      const url = `http://localhost:4200/api/storageservice/api/storages`; 
+      const url = `${environment.apiUrl}/storageservice/api/storages`; 
       return this._httpClient.get<StorageModel[]>(url).pipe(
         catchError(err => this.handleError('get storages', err))
       )
