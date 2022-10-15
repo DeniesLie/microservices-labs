@@ -22,4 +22,8 @@ export class HeaderComponent implements OnInit {
   onGoToStorages() {
     this._router.navigate(['storages'])
   }
+
+  onGoToItems() {
+    this._router.navigate(['items'])
+  }
 }
