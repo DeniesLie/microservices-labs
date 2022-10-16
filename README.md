@@ -16,13 +16,13 @@ The project developed by team #5 :
    [dockerhub](https://hub.docker.com/repository/docker/vynnykv/item-service))
 - Kalchenko Yehor: Employee service(
    [backend src](https://github.com/DeniesLie/microservices-labs/tree/main/src/backend/EmployeeService), 
-   [k8s config](https://github.com/DeniesLie/microservices-labs/tree/main/src/k8s/employee-service)
-   dockerhub)
+   [k8s config](https://github.com/DeniesLie/microservices-labs/tree/main/src/k8s/employee-service),
+   [dockerhub](https://hub.docker.com/repository/docker/fundowakin/employeeservice))
 - Shared: 
    - Angular client (
      [src](https://github.com/DeniesLie/microservices-labs/tree/main/src/frontend/client-app),
      [k8s config](https://github.com/DeniesLie/microservices-labs/tree/main/src/k8s/client),
-     [docker hub](https://hub.docker.com/repository/docker/denysl1enk0/mslabsngclient),
+     [docker hub](https://hub.docker.com/repository/docker/denysl1enk0/mslabsngclient)
    )
 
 ## Lab1 - Guideline
@@ -44,4 +44,4 @@ The project developed by team #5 :
    - Перейти у папку *scripts*.
    - Виконати bash-скрипт прописавши команду *bash apply.sh*. Виконається *kubectl apply* для кожного сервісу
    - Звернутися вийде тільки до бекенд сервісів. Клієнт викликає бекенд через **http://microserviceslasbs/api...**, тому він працює тільки для клауду і з конфігурацією локального DNS. 
-   - Для того, щоб видалити сервіси потрібно виконати bash-скрипт, прописавши команду *bash delete.sh*
+   - Для того, щоб видалити сервіси потрібно виконати bash-скрипт прописавши команду *bash delete.sh*
