@@ -10,7 +10,7 @@ spec:
   rules:
   - http:
       paths:
-      - path: /employeeservice(/|$)(.*)
+      - path: /api/employeeservice(/|$)(.*)
         pathType: Prefix
         backend:
           service:
