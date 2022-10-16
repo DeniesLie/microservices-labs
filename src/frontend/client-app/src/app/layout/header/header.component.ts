@@ -26,4 +26,8 @@ export class HeaderComponent implements OnInit {
   onGoToItems() {
     this._router.navigate(['items'])
   }
+
+  onGoToEmployees() {
+    this._router.navigate(['employees'])
+  }
 }
