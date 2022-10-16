@@ -13,7 +13,7 @@ The project developed by team #5 :
 - Vynnyk Vitalii: Item service(
    [backend src](https://github.com/DeniesLie/microservices-labs/tree/main/src/backend/ItemService), 
    [k8s config](https://github.com/DeniesLie/microservices-labs/tree/main/src/k8s/item-service),
-   dockerhub)
+   [dockerhub](https://hub.docker.com/repository/docker/vynnykv/item-service))
 - Kalchenko Yehor: Employee service(
    [backend src](https://github.com/DeniesLie/microservices-labs/tree/main/src/backend/EmployeeService), 
    [k8s config](https://github.com/DeniesLie/microservices-labs/tree/main/src/k8s/employee-service)
