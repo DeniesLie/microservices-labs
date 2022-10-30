@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: employee-db-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: employee-db
+  template:
+    metadata:
+      labels:
+        app: employee-db
+    spec:
+      containers:
+        - name: employee-db
+          image: mcr.microsoft.com/mssql/server:2017-latest
+          ports:
+            - containerPort: 1433
+          envFrom:
+            - configMapRef:
+                name: employee-db-config
+            - secretRef:
+                name: employee-db-secret
+          volumeMounts:
+            - name: employee-db-base-volume
+              mountPath: /var/opt/mssql 
+            - name: employee-db-ldf-volume
+              mountPath: /var/opt/mssql/ldf
+            - name: employee-db-mdf-volume
+              mountPath: /var/opt/mssql/mdf
+      volumes:
+        - name: employee-db-base-volume
+          persistentVolumeClaim:
+            claimName: employee-db-base-volume
+        - name: employee-db-mdf-volume
+          persistentVolumeClaim:
+            claimName: employee-db-mdf-volume
+        - name: employee-db-ldf-volume
+          persistentVolumeClaim:
+            claimName: employee-db-ldf-volume
