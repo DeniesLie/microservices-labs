@@ -1,4 +1,4 @@
 export interface StorageModel {
-    id: number
+    id: string
     address?: string
 }

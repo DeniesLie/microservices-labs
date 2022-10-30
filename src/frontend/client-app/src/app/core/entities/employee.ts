@@ -1,6 +1,6 @@
 export interface Employee
 {
-    id: number
+    id: string
     name?: string
     lastname?: string
     phonenumber?: string
