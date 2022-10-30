@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: transaction-db-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: transaction-db
+  template:
+    metadata:
+      labels:
+        app: transaction-db
+    spec:
+      containers:
+        - name: transaction-db
+          image: mcr.microsoft.com/mssql/server:2017-latest
+          ports:
+            - containerPort: 1433
+          envFrom:
+            - configMapRef:
+                name: transaction-db-config
+            - secretRef:
+                name: transaction-db-secret
+          volumeMounts:
+            - name: transaction-db-base-volume
+              mountPath: /var/opt/mssql 
+            - name: transaction-db-ldf-volume
+              mountPath: /var/opt/mssql/ldf
+            - name: transaction-db-mdf-volume
+              mountPath: /var/opt/mssql/mdf
+      volumes:
+        - name: transaction-db-base-volume
+          persistentVolumeClaim:
+            claimName: transaction-db-base-volume
+        - name: transaction-db-mdf-volume
+          persistentVolumeClaim:
+            claimName: transaction-db-mdf-volume
+        - name: transaction-db-ldf-volume
+          persistentVolumeClaim:
+            claimName: transaction-db-ldf-volume
