@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: transaction-db-config
+data:
+  MSSQL_PID: Express
+  ACCEPT_EULA: 'Y'
+  MSSQL_DATA_DIR: /var/opt/mssql/mdf
+  MSSQL_LOG_DIR: /var/opt/mssql/ldf
