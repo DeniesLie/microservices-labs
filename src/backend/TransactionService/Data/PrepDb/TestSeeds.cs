@@ -1,7 +1,7 @@
 using TransactionService.Enums;
 using TransactionService.Models;
 
-namespace TransactionService.Data.Seeds;
+namespace TransactionService.Data.PrerpDb;
 
 public static class TestSeeds
 {

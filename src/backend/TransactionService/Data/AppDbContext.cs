@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using TransactionService.Data.Seeds;
+using TransactionService.Data.PrerpDb;
 using TransactionService.Models;
 namespace TransactionService.Data;
 
