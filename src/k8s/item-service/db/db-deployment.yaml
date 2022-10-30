@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: item-db-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: item-db
+  template:
+    metadata:
+      labels:
+        app: item-db
+    spec:
+      containers:
+        - name: item-db
+          image: mcr.microsoft.com/mssql/server:2017-latest
+          ports:
+            - containerPort: 1433
+          envFrom:
+            - configMapRef:
+                name: item-db-config
+            - secretRef:
+                name: item-db-secret
+          volumeMounts:
+            - name: item-db-base-volume
+              mountPath: /var/opt/mssql 
+            - name: item-db-ldf-volume
+              mountPath: /var/opt/mssql/ldf
+            - name: item-db-mdf-volume
+              mountPath: /var/opt/mssql/mdf
+      volumes:
+        - name: item-db-base-volume
+          persistentVolumeClaim:
+            claimName: item-db-base-volume
+        - name: item-db-mdf-volume
+          persistentVolumeClaim:
+            claimName: item-db-mdf-volume
+        - name: item-db-ldf-volume
+          persistentVolumeClaim:
+            claimName: item-db-ldf-volume
