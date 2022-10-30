@@ -39,6 +39,17 @@ namespace TransactionService.Controllers
             return result;
         }
         
+        [HttpGet]
+        public async Task<IEnumerable<TransactionGetDto>> GetAllAsync()
+        {
+            var result = await _transactionRepo.Query()
+                .Include(t => t.Item)
+                .Select(t => new TransactionGetDto(t))
+                .ToListAsync();
+
+            return result;
+        }
+        
         [HttpGet("getByStorageId/{storageId:guid}")]
         public async Task<ActionResult<IEnumerable<TransactionGetDto>>> 
             GetAllForStorageAsync(Guid storageId)
