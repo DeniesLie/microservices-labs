@@ -1,10 +1,18 @@
-﻿namespace StorageService.Models;
+﻿using StorageService.Dtos;
 
-public class Storage
+namespace StorageService.Models;
+
+public class Storage: Model
 {
-	public int Id { get; set; }
-
-	public string? Name { get; set; }
+    public string? Name { get; set; }
 
 	public string? Address { get; set; }
+
+    public Storage() {}
+
+    public Storage(StoragePostDto dto)
+    {
+        Name = dto.Name;
+        Address = dto.Address;
+    }
 }

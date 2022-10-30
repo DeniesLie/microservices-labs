@@ -1,5 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using StorageService.Dtos;
+using Microsoft.EntityFrameworkCore;
+using StorageService.Models;
+using StorageService.Repositories.Interfaces;
 
 namespace StorageService.Controllers;
 
@@ -7,51 +10,69 @@ namespace StorageService.Controllers;
 [Route("api/storages")]
 public class StoragesController : ControllerBase
 {
+    public readonly IStorageRepository _storageRepository;
+
+    public StoragesController(IStorageRepository storageRepository)
+    {
+        _storageRepository = storageRepository;
+    }
+
     [HttpGet]
-    public IEnumerable<StorageGetDto> GetAll()
+    public async Task<ActionResult<IEnumerable<StorageGetDto>>> GetAll()
     {
-        return new List<StorageGetDto>()
-        {
-            new StorageGetDto()
-            {
-                Id = 1,
-                Name = "Storage A",
-                Address = "Winners avenue, 10"
-            },
-            new StorageGetDto()
-            {
-                Id = 2,
-                Name = "Storage B",
-                Address = "Magic street, 70/2"
-            },
-            new StorageGetDto()
-            {
-                Id = 3,
-                Name = "Storage C",
-                Address = "Central square"
-            }
-        };
+        return await _storageRepository.Query()
+            .Select(s => new StorageGetDto(s))
+            .ToListAsync();
     }
 
-    [HttpGet("{storageId:int:min(1)}")]
-    public StorageGetDto GetById(int storageId)
+    [HttpGet("{transactionId:guid}", Name = "GetById")]
+    public async Task<ActionResult<StorageGetDto>> GetByIdAsync(Guid storageId)
     {
-        return new StorageGetDto()
-        {
-            Id = 3,
-            Name = "Storage C",
-            Address = "Central square"
-        };
+        var storage = await _storageRepository.GetByIdAsync(storageId);
+
+        if (storage is null) return NotFound();
+
+        return new StorageGetDto(storage);
     }
 
-    [HttpPost("create")]
-    public IActionResult Create([FromBody] StoragePostDto storagePostDto)
+    [HttpPost("Create")]
+    public async Task<ActionResult<StorageGetDto>> CreateAsync([FromBody] StoragePostDto storagePostDto)
     {
-        return Ok(new StorageGetDto()
-        {
-            Id = 4,
-            Name = "Storage D",
-            Address = "Proscura's street, 12"
-        });
+        var storage = new Storage(storagePostDto);
+
+        _storageRepository.Create(storage);
+        await _storageRepository.SaveChangesAsync();
+
+        var result = new StorageGetDto(storage);
+
+        return CreatedAtRoute("GetById", new { storageId = result.Id }, result);
+    }
+
+    [HttpPut("Update")]
+    public async Task<ActionResult<StorageGetDto>> UpdateAsync([FromBody] StorageUpdateDto storageUpdateDto)
+    {
+        var storage = await _storageRepository.GetByIdAsync(storageUpdateDto.Id);
+
+        if (storage is null) return NotFound();
+
+        storage.Name = storageUpdateDto.Name;
+        storage.Address = storageUpdateDto.Address;
+        _storageRepository.Update(storage);
+        await _storageRepository.SaveChangesAsync();
+
+        return new StorageGetDto(storage);
+    }
+
+    [HttpDelete("{storageId:guid}")]
+    public async Task<IActionResult> DeleteAsync(Guid storageId)
+    {
+        var storage = await _storageRepository.GetByIdAsync(storageId);
+
+        if (storage is null) return NotFound();
+
+        _storageRepository.Delete(storage);
+        await _storageRepository.SaveChangesAsync();
+
+        return Ok();
     }
 }
