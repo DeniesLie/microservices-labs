@@ -1,3 +1,5 @@
+using EmployeeService.DI;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -7,6 +9,9 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddHealthChecks();
+
+builder.Services.AddEfDbContext(builder.Configuration);
+builder.Services.AddRepositories();
 
 var app = builder.Build();
 
