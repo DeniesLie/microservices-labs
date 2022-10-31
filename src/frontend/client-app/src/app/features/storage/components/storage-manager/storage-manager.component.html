@@ -1,4 +1,47 @@
 <h3>Storages:</h3>
-<p *ngFor="let s of storages">
-    Id: {{s.id}}; Address: {{s.address}} 
-</p>   
+<button mat-stroked-button (click)="create()">
+    New storage +
+</button>
+
+<table mat-table [dataSource]="storages">
+    <!-- Id column -->
+    <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef>Id</th>
+        <td mat-cell *matCellDef="let element">{{element.id}}</td>
+    </ng-container>
+
+    <!-- Name column -->
+    <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>Name</th>
+        <td mat-cell *matCellDef="let element">{{element.name}}</td>
+    </ng-container>
+
+    <!-- Address column -->
+    <ng-container matColumnDef="address">
+        <th mat-header-cell *matHeaderCellDef>Address</th>
+        <td mat-cell *matCellDef="let element">{{element.address}}</td>
+    </ng-container>
+
+    <!-- Edit column -->
+    <ng-container matColumnDef="edit">
+        <th mat-header-cell *matHeaderCellDef>Edit</th>
+        <td mat-cell *matCellDef="let element">
+            <button mat-fab color="primary" (click)="edit(element)">
+                <mat-icon>edit</mat-icon>
+            </button>
+        </td>
+    </ng-container>
+
+    <!-- Delete column -->
+    <ng-container matColumnDef="delete">
+        <th mat-header-cell *matHeaderCellDef>Delete</th>
+        <td mat-cell *matCellDef="let element">
+            <button mat-fab color="warn" (click)="delete(element)">
+                <mat-icon>delete</mat-icon>
+            </button>
+        </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>

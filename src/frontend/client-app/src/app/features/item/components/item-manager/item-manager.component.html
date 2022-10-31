@@ -1,4 +1,42 @@
 <h3>Items:</h3>
-<p *ngFor="let i of items">
-  Id: {{i.id}}; Name: {{i.name}}
-</p>
+
+<button mat-stroked-button (click)="create()">
+  New item +
+</button>
+
+<table mat-table [dataSource]="items">
+  <!-- Item id column -->
+  <ng-container matColumnDef="itemId">
+      <th mat-header-cell *matHeaderCellDef>Item ID</th>
+      <td mat-cell *matCellDef="let element">{{element.id}}</td>
+  </ng-container>
+
+  <!-- Item name column -->
+  <ng-container matColumnDef="itemName">
+      <th mat-header-cell *matHeaderCellDef>Name</th>
+      <td mat-cell *matCellDef="let element">{{element.name}}</td>
+  </ng-container>
+
+  <!-- Edit column -->
+  <ng-container matColumnDef="edit">
+      <th mat-header-cell *matHeaderCellDef>Edit</th>
+      <td mat-cell *matCellDef="let element">
+          <button mat-fab color="primary" (click)="edit(element)">
+              <mat-icon>edit</mat-icon>
+          </button>
+      </td>
+  </ng-container>
+
+  <!-- Delete column -->
+  <ng-container matColumnDef="delete">
+      <th mat-header-cell *matHeaderCellDef>Delete</th>
+      <td mat-cell *matCellDef="let element">
+          <button mat-fab color="warn" (click)="delete(element)">
+              <mat-icon>delete</mat-icon>
+          </button>
+      </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
