@@ -3,7 +3,7 @@ kind: Deployment                             # Deployment - це конфігу�
 metadata:
   name: itemservice-deployment
 spec:
-  replicas: 2                                # кількість екземплярів Pod, що буде створено цим Deployment
+  replicas: 1                             # кількість екземплярів Pod, що буде створено цим Deployment
   selector:
     matchLabels:
       app: itemservice                # селектор по якому Deployment зв'язаний з Pod
@@ -13,7 +13,7 @@ spec:
        app: itemservice               # мітка Pod по якому вона буде зв'язана з Deployment та Service
     spec:
       containers:
-        - image: vynnykv/item-service:latest
+        - image: vynnykv/item-service:0.2
           name: itemservice           # ім'я контейнеру
           readinessProbe:
             httpGet:
