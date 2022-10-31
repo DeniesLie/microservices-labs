@@ -1,0 +1,10 @@
+<h3>Edit transaction</h3>
+
+<form>
+    <mat-form-field>
+        <mat-label>Notes</mat-label>
+        <input matInput [formControl]="notesControl">
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" (click)="update()">Update</button>
+</form>

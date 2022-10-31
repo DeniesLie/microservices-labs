@@ -1,6 +1,5 @@
-﻿using ItemService.Data;
-using ItemService.DTOs;
-using ItemService.Models;
+﻿using ItemService.DTOs;
+using ItemService.Services.Abstract;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ItemService.Controllers;
@@ -8,43 +7,54 @@ namespace ItemService.Controllers;
 [Route("api/items")]
 public class ItemsController : ControllerBase
 {
-    private readonly DataContext _dataContext = new DataContext();
+    private readonly IItemService _itemService;
     
-    [HttpGet]
-    public IEnumerable<ItemGetDto> GetAll()
+    public ItemsController(IItemService itemService)
     {
-        return _dataContext.Items.Select(i => new ItemGetDto()
-        {
-            Id = i.Id,
-            Name = i.Name
-        });
+        _itemService = itemService;
     }
-
-    [HttpGet("{itemId:int}")]
-    public ItemGetDto GetById(int itemId)
-    {
-        if (itemId < 0 || itemId > _dataContext.Items.Count)
+    
+        [HttpGet("{itemId:guid}", Name = "GetById")]
+        public async Task<ActionResult<ItemGetDto>> GetByIdAsync(Guid itemId)
         {
-            var firstElement = _dataContext.Items[0];
-            return new ItemGetDto {Id = firstElement.Id, Name = firstElement.Name};
+            try { return await _itemService.GetByIdAsync(itemId); }
+            catch (ArgumentException) { return NotFound(); }
+        }
+        
+        [HttpGet]
+        public async Task<ActionResult<List<ItemGetDto>>> GetAllAsync()
+        {
+            return await _itemService.GetAllAsync();
         }
 
-        return _dataContext.Items
-            .Select(i => new ItemGetDto {Id = i.Id, Name = i.Name})
-            .FirstOrDefault(i => i.Id == itemId)!;
-    }
+        [HttpPost]
+        public async Task<ActionResult<ItemGetDto>> CreateAsync([FromBody] ItemPostDto itemPostDto)
+        {
+            var createdItem = await _itemService.CreateAsync(itemPostDto);
 
-    [HttpPost]
-    public ItemGetDto Create(ItemPostDto itemPostDto)
-    {
-        _dataContext.Items
-            .Add(new Item()
+            return CreatedAtRoute("GetById", 
+                new { itemId = createdItem.Id }, 
+                createdItem);
+        }
+
+        [HttpPut]
+        public async Task<ActionResult<ItemGetDto>> UpdateAsync([FromBody] ItemPutDto itemPutDto)
+        {
+            try { return await _itemService.UpdateAsync(itemPutDto); }
+            catch (ArgumentException) { return NotFound(); }
+        }
+
+        [HttpDelete("{itemId:guid}")]
+        public async Task<IActionResult> DeleteAsync(Guid itemId)
+        {
+            try
             {
-                Id = _dataContext.Items.Count + 1,
-                Name = itemPostDto.Name
-            });
-
-        return _dataContext.Items.Select(i => new ItemGetDto {Id = i.Id, Name = i.Name})
-            .LastOrDefault()!;
-    }
+                await _itemService.DeleteAsync(itemId);
+                return NoContent();
+            }
+            catch (ArgumentException)
+            {
+                return NotFound();
+            }
+        }
 }

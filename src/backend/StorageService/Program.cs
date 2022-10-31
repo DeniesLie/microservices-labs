@@ -1,3 +1,6 @@
+using StorageService.Data.DbExtensions;
+using StorageService.DI;
+
 var builder = WebApplication.CreateBuilder(args);
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
@@ -20,7 +23,12 @@ builder.Services.AddCors(options =>
         });
 });
 
+builder.Services.AddEfDbContext(builder.Configuration);
+builder.Services.AddRepositories();
+
 var app = builder.Build();
+
+app.ApplyMigrations();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

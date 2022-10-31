@@ -1,0 +1,10 @@
+<h3>Update item</h3>
+
+<form [formGroup]="dataForm">
+    <mat-form-field>
+        <mat-label>Item Name</mat-label>
+        <input matInput formControlName="name">
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" (click)="update()">Update</button>
+</form>

@@ -1,0 +1,30 @@
+<h2>New employee</h2>
+
+<form [formGroup]="dataForm">
+    <mat-form-field>
+        <mat-label>First Name</mat-label>
+        <input matInput formControlName="name">
+    </mat-form-field>
+
+    <mat-form-field>
+        <mat-label>Last Name</mat-label>
+        <input matInput formControlName="lastname">
+    </mat-form-field>
+
+    <mat-form-field>
+        <mat-label>Phone Number</mat-label>
+        <input matInput formControlName="phoneNumber">
+    </mat-form-field>
+
+    <mat-form-field>
+        <mat-label>Position</mat-label>
+        <mat-select formControlName="positionId">
+            <mat-option value="0d1a8e87-c8dd-465c-9d58-03de8557612f">Sitecore Consultant</mat-option>
+            <mat-option value="936bfe7f-d97b-4591-abcf-08844d35e9f6">DevOps</mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" 
+            (click)="create()"
+            [disabled]="dataForm.invalid">Create</button>
+</form>

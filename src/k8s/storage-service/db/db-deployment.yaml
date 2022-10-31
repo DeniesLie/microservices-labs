@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: storage-db-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: storage-db
+  template:
+    metadata:
+      labels:
+        app: storage-db
+    spec:
+      containers:
+        - name: storage-db
+          image: mcr.microsoft.com/mssql/server:2017-latest
+          ports:
+            - containerPort: 1433
+          envFrom:
+            - configMapRef:
+                name: storage-db-config
+            - secretRef:
+                name: storage-db-secret
+          volumeMounts:
+            - name: storage-db-base-volume
+              mountPath: /var/opt/mssql 
+            - name: storage-db-ldf-volume
+              mountPath: /var/opt/mssql/ldf
+            - name: storage-db-mdf-volume
+              mountPath: /var/opt/mssql/mdf
+      volumes:
+        - name: storage-db-base-volume
+          persistentVolumeClaim:
+            claimName: storage-db-base-volume
+        - name: storage-db-mdf-volume
+          persistentVolumeClaim:
+            claimName: storage-db-mdf-volume
+        - name: storage-db-ldf-volume
+          persistentVolumeClaim:
+            claimName: storage-db-ldf-volume

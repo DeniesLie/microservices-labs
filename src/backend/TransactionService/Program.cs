@@ -1,3 +1,7 @@
+using TransactionService.Data;
+using TransactionService.Data.PrerpDb;
+using TransactionService.DependencyInjection;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -15,9 +19,10 @@ builder.Services.AddCors(options =>
           builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
       });
 });
-
+builder.Services.AddEfDbContext(builder.Configuration);
+builder.Services.AddRepositories();
 var app = builder.Build();
-
+app.ApplyMigrations();
 // Configure the HTTP request pipeline.
 app.UseCors("AllowAllPolicy");
 

@@ -1,0 +1,10 @@
+<h3>Create item</h3>
+
+<form [formGroup]="dataForm">
+    <mat-form-field>
+        <mat-label>Item Name</mat-label>
+        <input matInput formControlName="name">
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" (click)="create()">Create</button>
+</form>

@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service                 # це абстракція, що об'єднує логічний набір Pod і забезпечує доступ до них. Набір Pod, призначених для Service, зазвичай визначається через selector.
+metadata:
+  name: transaction-db-clusterip-svc
+spec:
+  selector:
+    app: transaction-db   # селектор, всі Pod з даним селектором, будуть підключені до даного сервісу
+  ports:
+    - protocol: TCP
+      port: 1433              # порт по якому можна звератись до сервісу
+      targetPort: 1433          # порт контейнера
+  type: ClusterIP
