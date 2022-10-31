@@ -25,7 +25,7 @@ public class StoragesController : ControllerBase
             .ToListAsync();
     }
 
-    [HttpGet("{transactionId:guid}", Name = "GetById")]
+    [HttpGet("{storageId:guid}", Name = "GetById")]
     public async Task<ActionResult<StorageGetDto>> GetByIdAsync(Guid storageId)
     {
         var storage = await _storageRepository.GetByIdAsync(storageId);
