@@ -1,4 +1,5 @@
 using ItemService;
+using ItemService.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +22,7 @@ builder.Services.AddDbContext(builder.Configuration);
 builder.Services.AddServices();
 
 var app = builder.Build();
+app.ApplyMigrations();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
