@@ -25,6 +25,55 @@ The project developed by team #5 :
      [docker hub](https://hub.docker.com/repository/docker/denysl1enk0/mslabsngclient)
    )
 
+## Lab2
+1) У рамках даної лабораторної роботи було додано CУБД SQL Server для кожного із сервісів в середовищі k8s 
+   і реалізовано CRUD операції.
+
+   Всі yaml файли, що пов'язані із конфігурацією БД зберігаються в директоріях */src/k8s/(service-name)/db*.
+
+   Кластер піднято в GKE (Google Kubernetes Engine). GKE одразу має 3 види Storage Class: standard, standard-rwo, 
+   premium-rwo. Всі створені Persistent Volume Claim (PVC) використовують standart Storage Class (значення за замовченням)
+
+   Оскільки файли даних бази даних SQL Server (mdf), файли логів (ldf) і TempDB налаштовані в різних томах зберігання, і методи доступу SQL Server до них   
+   відрізняються: довільне читання/запис vs послідовне, тому на кожний тип файлів було виділено окремий PVC.
+   <img src="https://user-images.githubusercontent.com/59698344/198966881-d3f925ee-023c-4151-b288-a528b5774c0a.png" width="500"/>
+
+   Ми не звертаємось до бд ззовні кластеру - тільки у його межах, тому для сервісів бд обрано тип ClusterIp
+   <img src="https://user-images.githubusercontent.com/59698344/198967571-5cb81085-a780-44dc-8f26-f93c99c6be1c.png" width="500"/>
+
+2) Для роботи з бд було використано ORM EF Core, яка підтримує створення міграцій. 
+   [Приклад директорії із згенерованими міграціями](https://github.com/DeniesLie/microservices-labs/tree/main/src/backend/TransactionService/Migrations)
+
+3) Міграції відбуваються під час запуску REST сервісів (Без використання Kubernetes Job або initContainer). Якщо бд знаходиться вже у  стані поточної міграції, то      ORM Entity Framework це побачить і не буде зайвий раз звертатися до бд </br>
+   ```
+   public static void ApplyMigrations(this WebApplication app)
+       {
+           using var scope = app.Services.CreateScope();
+           var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+
+           if (dbContext is not null && app.Environment.IsProduction())
+           {
+               try
+               {
+                   dbContext.Database.Migrate();
+               }
+               catch (Exception ex)
+               {
+                   app.Logger.LogError($"Could not apply migrations. {ex.Message}");
+                   throw;
+               }
+           }
+       }
+   ```
+
+4) Сервіс було розширено: додано CRUD операції для основної сутності кожного сервісу
+   <img src="https://user-images.githubusercontent.com/59698344/198973550-bf38432d-54fa-4bb7-839b-55723affcde6.png" width="700"/>
+   <img src="https://user-images.githubusercontent.com/59698344/198973710-7a7f9263-e675-4c77-95c5-5ac3e4374cbd.png" width="700"/>
+   <img src="https://user-images.githubusercontent.com/59698344/198973896-e8538a12-9e2e-4a31-9ff6-ade27b92fdb2.png" width="700"/>
+   <img src="https://user-images.githubusercontent.com/59698344/198973981-f2337b57-3842-4d6b-be60-6632b0a23884.png" width="700"/>
+
+Як підключитися до веб-клієнта і перевірити роботу додатку описано в секції Lab1 ↓↓↓
+
 ## Lab1 - Guideline
 При виконанні лабораторної роботи було налаштовано кластер kubernetes за допомогою хмарного провайдера Google Cloud Platform.
 
