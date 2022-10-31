@@ -1,20 +1,21 @@
+import { TransactionType } from "../enums/TransactionType"
+import { Item } from "./item"
+
 export interface Transaction {
     id: string
-    name?: string
-    itemId: number
-    itemName?: string
-    itemAmount: number
-    storageId: number
+    item: Item
+    amount: number
+    storageId: string
+    type: TransactionType
     notes: string
 }
 
 export interface TransactionCreate {
-    name?: string
-    itemId: number
-    itemName?: string
-    itemAmount: number
-    storageId: number
-    notes: string
+    itemId: string
+    amount: number
+    storageId: string
+    type: TransactionType
+    notes?: string
 }
 
 export interface TransactionUpdate {

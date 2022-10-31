@@ -1,0 +1,15 @@
+<h3>Edit storage</h3>
+
+<form [formGroup]="dataForm">
+    <mat-form-field>
+        <mat-label>Storage Address</mat-label>
+        <input matInput formControlName="address">
+    </mat-form-field>
+
+    <mat-form-field>
+        <mat-label>Storage Name</mat-label>
+        <input matInput formControlName="name">
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" (click)="update()">Update</button>
+</form>
