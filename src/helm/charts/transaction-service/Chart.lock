@@ -1,0 +1,9 @@
+dependencies:
+- name: common
+  repository: file://../common
+  version: 0.1.0
+- name: mssql
+  repository: https://licenseware.github.io/charts/
+  version: 0.1.1
+digest: sha256:94474ec7df0a99a45a7b1c803b87658ae2ae653789008bdfb42b545aefb5a110
+generated: "2022-11-13T12:45:36.9687067+02:00"
