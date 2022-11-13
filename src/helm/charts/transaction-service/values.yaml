@@ -23,7 +23,7 @@ ingress:
 secrets:
   SA_PASSWORD: "UGE1NXcwcmQh"
 
-mssql:
+transaction-service-mssql:
   config:
     saPassword: "Pa55w0rd!"
     
