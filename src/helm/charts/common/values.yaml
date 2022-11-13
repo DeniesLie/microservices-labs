@@ -1,0 +1,5 @@
+readinessProbe:
+  path: /health
+  port: 80
+  initialDelaySeconds: 20
+  periodSeconds: 20
