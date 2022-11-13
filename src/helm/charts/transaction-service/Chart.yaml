@@ -1,0 +1,12 @@
+apiVersion: v2
+type: application
+version: 0.1.0
+name: transaction-service
+appVersion: "0.2"
+dependencies:
+  - name: common
+    version: 0.1.0
+    repository: file://../common
+  - name: mssql
+    version: 0.1.1
+    repository: https://licenseware.github.io/charts/
