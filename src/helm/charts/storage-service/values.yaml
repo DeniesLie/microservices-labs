@@ -1,7 +1,7 @@
 replicasCount: 1
 
 image: 
-  name: zozuliuk22/storageservice:0.1
+  name: zozuliuk22/storageservice
   tag: 0.1
 
 containers:
