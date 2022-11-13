@@ -1,0 +1,29 @@
+replicasCount: 1
+
+image: 
+  name: zozuliuk22/storageservice:0.1
+  tag: 0.1
+
+containers:
+  name: storageservice
+  containerPort: 80
+
+service:
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 80
+
+ingress:
+  path: /api/storageservice(/|$)(.*)
+  pathType: Prefix
+  port:
+    number: 8080
+  
+secrets:
+  SA_PASSWORD: "UGE1NXcwcmQh"
+
+transaction-service-mssql:
+  config:
+    saPassword: "Pa55w0rd!"
+    
