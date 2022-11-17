@@ -8,7 +8,10 @@ public class AppDbContext: DbContext
 {
     public DbSet<Storage>? Storages { get; set; }
 
-    public AppDbContext(DbContextOptions<AppDbContext> opts) : base(opts) { }
+    public AppDbContext(DbContextOptions<AppDbContext> opts) : base(opts)
+    {
+        Database.EnsureCreated();
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
