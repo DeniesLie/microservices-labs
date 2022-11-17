@@ -22,7 +22,7 @@ builder.Services.AddCors(options =>
 builder.Services.AddEfDbContext(builder.Configuration);
 builder.Services.AddRepositories();
 var app = builder.Build();
-app.ApplyMigrations();
+
 // Configure the HTTP request pipeline.
 app.UseCors("AllowAllPolicy");
 
