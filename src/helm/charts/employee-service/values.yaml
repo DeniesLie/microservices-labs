@@ -1,0 +1,29 @@
+replicasCount: 1
+
+image: 
+  name: fundowakin/employeeservice
+  tag: latest
+
+containers:
+  name: employeeservice
+  containerPort: 80
+
+service:
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 80
+
+ingress:
+  path: /api/employeeservice(/|$)(.*)
+  pathType: Prefix
+  port:
+    number: 8080
+  
+secrets:
+  SA_PASSWORD: "UGE1NXcwcmQh"
+
+employee-service-mssql:
+  config:
+    saPassword: "Pa55w0rd!"
+    
