@@ -1,0 +1,29 @@
+replicasCount: 1
+
+image: 
+  name: denysl1enk0/transactionservice
+  tag: 0.3
+
+containers:
+  name: transactionservice
+  containerPort: 80
+
+service:
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 80
+
+ingress:
+  path: /api/transactionservice(/|$)(.*)
+  pathType: Prefix
+  port:
+    number: 8080
+  
+secrets:
+  SA_PASSWORD: "UGE1NXcwcmQh"
+
+transaction-service-mssql:
+  config:
+    saPassword: "Pa55w0rd!"
+    

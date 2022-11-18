@@ -81,6 +81,7 @@ project.lock.json
 project.fragment.lock.json
 artifacts/
 
+
 *_i.c
 *_p.c
 *_i.h
@@ -655,6 +656,8 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+
+*.tgz
 
 # JetBrains Rider
 

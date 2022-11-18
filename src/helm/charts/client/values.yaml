@@ -1,0 +1,22 @@
+replicasCount: 1
+
+image: 
+  name: denysl1enk0/mslabsngclient
+  tag: 0.1
+
+containers:
+  name: webui
+  containerPort: 80
+
+service:
+  ports:
+    - name: http
+      port: 80
+      targetPort: 80
+
+ingress:
+  path: /
+  pathType: Prefix
+  port:
+    number: 80
+    

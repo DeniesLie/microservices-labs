@@ -1,0 +1,29 @@
+replicasCount: 1
+
+image: 
+  name: vynnykv/item-service
+  tag: 0.3
+
+containers:
+  name: itemservice
+  containerPort: 80
+
+service:
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 80
+
+ingress:
+  path: /api/itemservice(/|$)(.*)
+  pathType: Prefix
+  port:
+    number: 8080
+  
+secrets:
+  SA_PASSWORD: "UGE1NXcwcmQh"
+
+item-service-mssql:
+  config:
+    saPassword: "Pa55w0rd!"
+    
