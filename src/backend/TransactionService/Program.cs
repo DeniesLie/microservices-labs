@@ -21,6 +21,8 @@ builder.Services.AddCors(options =>
 });
 builder.Services.AddEfDbContext(builder.Configuration);
 builder.Services.AddRepositories();
+builder.Services.AddServices();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
