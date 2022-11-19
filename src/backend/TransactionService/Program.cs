@@ -22,6 +22,7 @@ builder.Services.AddCors(options =>
 });
 builder.Services.AddEfDbContext(builder.Configuration);
 builder.Services.AddRepositories();
+builder.Services.AddHttpClient();
 builder.Services.AddServices();
 
 var app = builder.Build();

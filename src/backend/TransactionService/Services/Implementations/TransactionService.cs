@@ -10,17 +10,17 @@ namespace TransactionService.Services.Implementations;
 public class TransactionService : ITransactionService
 {
     private readonly ITransactionRepository _transactionRepo;
-    private readonly IStorageRepository _storageRepo;
-    private readonly IItemRepository _itemRepo;
+    private readonly IStorageService _storageService;
+    private readonly IItemService _itemService;
 
     public TransactionService(
         ITransactionRepository transactionRepo, 
-        IStorageRepository storageRepo, 
-        IItemRepository itemRepo)
+        IStorageService storageService, 
+        IItemService itemService)
     {
         _transactionRepo = transactionRepo;
-        _storageRepo = storageRepo;
-        _itemRepo = itemRepo;
+        _storageService = storageService;
+        _itemService = itemService;
     }
 
     public async Task<TransactionGetDto> GetByIdAsync(Guid transactionId)
@@ -49,7 +49,7 @@ public class TransactionService : ITransactionService
 
     public async Task<IEnumerable<TransactionGetDto>> GetAllForStorageAsync(Guid storageId)
     {
-        var storage = await _storageRepo.GetByIdAsync(storageId);
+        var storage = await _storageService.GetByIdAsync(storageId);
 
         if (storage is null)
             throw new NotFoundException("Storage not found");
@@ -65,8 +65,8 @@ public class TransactionService : ITransactionService
 
     public async Task<TransactionGetDto> CreateAsync(TransactionPostDto transactionDto)
     {
-        var storage = await _storageRepo.GetByIdAsync(transactionDto.StorageId);
-        var item = await _itemRepo.GetByIdAsync(transactionDto.ItemId);
+        var storage = await _storageService.GetByIdAsync(transactionDto.StorageId);
+        var item = await _itemService.GetByIdAsync(transactionDto.ItemId);
 
         if (storage is null)
             throw new NotFoundException("Storage not found");
