@@ -3,3 +3,9 @@ readinessProbe:
   port: 80
   initialDelaySeconds: 20
   periodSeconds: 20
+
+virtualService:
+  timeout: 10s
+  attempts: 3
+  retryOn: 5xx
+  perTryTimeout: 10s
