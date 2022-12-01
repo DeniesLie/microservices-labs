@@ -4,9 +4,9 @@
     <mat-form-field>
         <mat-label>Item</mat-label>
         <mat-select formControlName="itemId">
-            <mat-option value="03dec121-ac0e-4189-bd9e-68013cd175f9">Javelin</mat-option>
-            <mat-option value="7c164a1e-84ab-44b9-9542-9c0a681172a7">NLAW</mat-option>
-            <mat-option value="8f515945-5f20-4acb-95fc-b0aa2eb91497">Switchblade 300</mat-option>
+            <ng-container *ngFor="let item of items">
+                <mat-option [value]="item.id">{{ item.name }}</mat-option>
+            </ng-container>
         </mat-select>
     </mat-form-field>
 
@@ -17,9 +17,10 @@
 
     <mat-form-field>
         <mat-label>Storage</mat-label>
-        <mat-select formControlName="storageId" >
-            <mat-option value="15ec584d-b6fb-4fd6-b064-76cc9e71f2e5">#15ec584d</mat-option>
-            <mat-option value="a872e805-9c4e-4589-af4c-8ed0af421b4c">#a872e805</mat-option>
+        <mat-select formControlName="storageId">
+            <ng-container *ngFor="let storage of storages">
+                <mat-option [value]="storage.id">{{storage.name}}: {{storage.address}}</mat-option>
+            </ng-container>
         </mat-select>
     </mat-form-field>
 

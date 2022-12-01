@@ -12,4 +12,8 @@ public class ItemGetDto
         Id = item.Id;
         Name = item.Name;
     }
+
+    public ItemGetDto()
+    {
+    }
 }

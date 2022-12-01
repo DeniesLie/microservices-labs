@@ -11,7 +11,7 @@ kind: Service
 metadata:
   name: {{ include "common.fullname" .}}
 spec:
-  type: NodePort
+  type: ClusterIP
   ports:
   {{- range .Values.service.ports }}
     - port: {{ .port }}
