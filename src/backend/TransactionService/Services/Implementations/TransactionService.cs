@@ -10,17 +10,24 @@ namespace TransactionService.Services.Implementations;
 public class TransactionService : ITransactionService
 {
     private readonly ITransactionRepository _transactionRepo;
+    private readonly IItemRepository _itemRepo;
+    private readonly IStorageRepository _storageRepo;
+    
     private readonly IStorageService _storageService;
     private readonly IItemService _itemService;
 
     public TransactionService(
         ITransactionRepository transactionRepo, 
         IStorageService storageService, 
-        IItemService itemService)
+        IItemService itemService, 
+        IItemRepository itemRepo, 
+        IStorageRepository storageRepo)
     {
         _transactionRepo = transactionRepo;
         _storageService = storageService;
         _itemService = itemService;
+        _itemRepo = itemRepo;
+        _storageRepo = storageRepo;
     }
 
     public async Task<TransactionGetDto> GetByIdAsync(Guid transactionId)
@@ -73,7 +80,10 @@ public class TransactionService : ITransactionService
 
         if (item is null)
             throw new NotFoundException("Item not found");
-                
+
+        await _storageRepo.EnsureEntityUpdatedAsync(new Storage(storage));
+        await _itemRepo.EnsureEntityUpdatedAsync(new Item(item));
+        
         var transaction = new TransactionModel(transactionDto);
             
         _transactionRepo.Insert(transaction);
