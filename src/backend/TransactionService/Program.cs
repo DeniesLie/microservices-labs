@@ -1,6 +1,7 @@
 using TransactionService.Data;
 using TransactionService.Data.PrerpDb;
 using TransactionService.DependencyInjection;
+using TransactionService.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +22,9 @@ builder.Services.AddCors(options =>
 });
 builder.Services.AddEfDbContext(builder.Configuration);
 builder.Services.AddRepositories();
+builder.Services.AddHttpClient();
+builder.Services.AddServices();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -31,6 +35,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseMiddleware<ExceptionMiddleware>();
 
 app.UseAuthorization();
 

@@ -2,7 +2,7 @@ replicasCount: 1
 
 image: 
   name: denysl1enk0/transactionservice
-  tag: 0.3
+  tag: 0.4
 
 containers:
   name: transactionservice

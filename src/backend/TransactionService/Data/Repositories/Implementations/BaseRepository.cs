@@ -48,6 +48,17 @@ public abstract class BaseRepository<TEntity> : IRepository<TEntity>
     {
         _dbSet.Update(entity);
     }
+    public async Task EnsureEntityUpdatedAsync(TEntity entity)
+    {
+        var isEntityExists = (await GetByIdAsync(entity.Id)) is not null;
+
+        if (!isEntityExists)
+        {
+            Insert(entity);
+        }
+
+        await SaveChangesAsync();
+    }
 
     public async Task SaveChangesAsync()
     {
