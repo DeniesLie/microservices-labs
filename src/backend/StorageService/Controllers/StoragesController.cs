@@ -76,7 +76,7 @@ public class StoragesController : ControllerBase
         return Ok();
     }
 
-    [HttpGet(Name = "brokenEndpoint")]
+    [HttpGet("brokenEndpoint")]
     public async Task<IActionResult> BrokenEndpoint()
     {
         return StatusCode(500);
