@@ -10,4 +10,5 @@ public interface ITransactionService
     Task<TransactionGetDto> CreateAsync(TransactionPostDto transactionPostDto);
     Task<TransactionGetDto> UpdateAsync(TransactionUpdateDto transactionUpdateDto);
     Task DeleteAsync(Guid transactionId);
+    Task TestBrokenEndpointAsync();
 }

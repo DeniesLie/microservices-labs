@@ -1,3 +1,6 @@
+using System.Diagnostics;
+using System.Net.Http;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using TransactionService.Data.Repositories.Interfaces;
 using TransactionService.Dtos;
@@ -16,18 +19,21 @@ public class TransactionService : ITransactionService
     private readonly IStorageService _storageService;
     private readonly IItemService _itemService;
 
+    private readonly ILogger _logger;
+
     public TransactionService(
         ITransactionRepository transactionRepo, 
         IStorageService storageService, 
         IItemService itemService, 
         IItemRepository itemRepo, 
-        IStorageRepository storageRepo)
+        IStorageRepository storageRepo, ILogger logger)
     {
         _transactionRepo = transactionRepo;
         _storageService = storageService;
         _itemService = itemService;
         _itemRepo = itemRepo;
         _storageRepo = storageRepo;
+        _logger = logger;
     }
 
     public async Task<TransactionGetDto> GetByIdAsync(Guid transactionId)
@@ -120,4 +126,35 @@ public class TransactionService : ITransactionService
         _transactionRepo.Delete(transaction);
         await _transactionRepo.SaveChangesAsync();
     }
+
+    public async Task TestBrokenEndpointAsync()
+    {
+        int requestsAmount = 100;
+        double averageTime;
+        
+        _logger.LogInformation($"Starting benchmark for {requestsAmount} concurrent requests");
+        
+        averageTime = await BenchmarkStorageService(requestsAmount);
+        _logger.LogInformation($"Before service 'break'. Average time: {averageTime}");
+        
+        await _storageService.CallBrokenEndpointAsync();
+        _logger.LogInformation("Storage service pod was successfully broken");
+        
+        averageTime = await BenchmarkStorageService(requestsAmount);
+        _logger.LogInformation($"After service 'break'. Average time: {averageTime}");
+    }
+
+    private async Task<double> BenchmarkStorageService(int requestsAmount)
+    {
+        var taskCollection = new List<Task<Tuple<HttpResponseMessage, TimeSpan>>>();
+        for (var i = 1; i <= requestsAmount; i++)
+        {
+            taskCollection.Add(_storageService.SpeedTestAsync());
+        }
+        await Task.WhenAll(taskCollection);
+        
+        var resultCollection = taskCollection.Select(t => t.Result);
+        return resultCollection.Average(r => r.Item2.Milliseconds);
+    }
+    
 }

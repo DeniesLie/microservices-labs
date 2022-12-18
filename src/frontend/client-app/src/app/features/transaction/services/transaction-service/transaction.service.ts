@@ -50,6 +50,13 @@ export class TransactionService {
     );
   }
 
+  testBrokenEndpoint() {
+    const url = `${this.baseUrl}/${'testBrokenEndpoint'}`;
+    return this._httpClient.get(url).pipe(
+      catchError(err => this.handleError('testing broken endpoint', err))
+    );
+  }
+
   private handleError(method: string, err: any) {
     console.log(`Error while trying to ${method}. ${err}`);
     return throwError(err);
