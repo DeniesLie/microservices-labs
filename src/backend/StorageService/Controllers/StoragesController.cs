@@ -11,10 +11,12 @@ namespace StorageService.Controllers;
 public class StoragesController : ControllerBase
 {
     public readonly IStorageRepository _storageRepository;
-
-    public StoragesController(IStorageRepository storageRepository)
+    private readonly HealthState _healthState;
+    
+    public StoragesController(IStorageRepository storageRepository, HealthState healthState)
     {
         _storageRepository = storageRepository;
+        _healthState = healthState;
     }
 
     [HttpGet]
@@ -76,9 +78,19 @@ public class StoragesController : ControllerBase
         return Ok();
     }
 
-    [HttpGet("brokenEndpoint")]
-    public async Task<IActionResult> BrokenEndpoint()
+    [HttpPost("brokenEndpoint")]
+    public IActionResult BrokenEndpoint()
     {
-        return StatusCode(500);
+        _healthState.IsSlowed = true;
+        return Ok("Service was successfully broken");
+    }
+
+    [HttpGet("speedTest")]
+    public IActionResult SpeedTest()
+    {
+        if (_healthState.IsSlowed)
+            Thread.Sleep(10000);
+
+        return Ok();
     }
 }

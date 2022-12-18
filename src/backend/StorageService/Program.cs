@@ -1,3 +1,4 @@
+using StorageService;
 using StorageService.Data.DbExtensions;
 using StorageService.DI;
 
@@ -11,6 +12,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddHealthChecks();
+builder.Services.AddSingleton<HealthState>();
 
 builder.Services.AddCors(options =>
 {
