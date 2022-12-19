@@ -73,5 +73,13 @@ namespace TransactionService.Controllers
             await _transactionService.DeleteAsync(transactionId);
             return Ok();
         }
+
+        // Calls broken Endpoint for storage service to test retry/timeout & circuit breaker
+        [HttpGet("testBrokenEndpoint")]
+        public async Task<IActionResult> TestBrokenEndpointAsync() 
+        {
+            await _transactionService.TestBrokenEndpointAsync();
+            return Ok();
+        }
     }
 }

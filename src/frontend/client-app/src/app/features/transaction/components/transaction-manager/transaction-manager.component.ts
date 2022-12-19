@@ -53,4 +53,8 @@ export class TransactionManagerComponent implements OnInit {
   {
     this._transactionService.delete(transaction.id).subscribe();
   }
+
+  testBrokenEndpoint() {
+    this._transactionService.testBrokenEndpoint().subscribe();
+  }
 }

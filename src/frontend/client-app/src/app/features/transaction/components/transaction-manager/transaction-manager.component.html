@@ -3,6 +3,10 @@
     New transaction +
 </button>
 
+<button mat-raised-button color="warn" (click)="testBrokenEndpoint()">
+    Test broken endpoint
+</button>
+
 <table mat-table [dataSource]="transactions">
     <!-- Item name column -->
     <ng-container matColumnDef="itemName">
