@@ -26,7 +26,8 @@ public class TransactionService : ITransactionService
         IStorageService storageService, 
         IItemService itemService, 
         IItemRepository itemRepo, 
-        IStorageRepository storageRepo, ILogger logger)
+        IStorageRepository storageRepo, 
+        ILogger<TransactionService> logger)
     {
         _transactionRepo = transactionRepo;
         _storageService = storageService;
@@ -129,19 +130,19 @@ public class TransactionService : ITransactionService
 
     public async Task TestBrokenEndpointAsync()
     {
-        int requestsAmount = 100;
+        int requestsAmount = 20;
         double averageTime;
         
         _logger.LogInformation($"Starting benchmark for {requestsAmount} concurrent requests");
         
         averageTime = await BenchmarkStorageService(requestsAmount);
-        _logger.LogInformation($"Before service 'break'. Average time: {averageTime}");
+        _logger.LogInformation($"Before service 'break'. Average time: {averageTime}ms");
         
         await _storageService.CallBrokenEndpointAsync();
         _logger.LogInformation("Storage service pod was successfully broken");
         
         averageTime = await BenchmarkStorageService(requestsAmount);
-        _logger.LogInformation($"After service 'break'. Average time: {averageTime}");
+        _logger.LogInformation($"After service 'break'. Average time: {averageTime}ms");
     }
 
     private async Task<double> BenchmarkStorageService(int requestsAmount)
@@ -154,7 +155,7 @@ public class TransactionService : ITransactionService
         await Task.WhenAll(taskCollection);
         
         var resultCollection = taskCollection.Select(t => t.Result);
-        return resultCollection.Average(r => r.Item2.Milliseconds);
+        return resultCollection.Average(r => r.Item2.TotalMilliseconds);
     }
     
 }
