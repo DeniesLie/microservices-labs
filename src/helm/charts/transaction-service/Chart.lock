@@ -5,5 +5,5 @@ dependencies:
 - name: mssql
   repository: https://licenseware.github.io/charts/
   version: 0.1.1
-digest: sha256:94474ec7df0a99a45a7b1c803b87658ae2ae653789008bdfb42b545aefb5a110
-generated: "2022-11-13T12:45:36.9687067+02:00"
+digest: sha256:d8ae502ab73db2918c456b3e1a37f16235dae073b6b4b39880fea8511db8e251
+generated: "2022-12-18T21:55:41.5199029+02:00"
