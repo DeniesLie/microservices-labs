@@ -1,3 +1,4 @@
+using TransactionService.BackgroundServices;
 using TransactionService.Data;
 using TransactionService.Data.PrerpDb;
 using TransactionService.DependencyInjection;
@@ -12,6 +13,10 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddHealthChecks();
+
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAllPolicy",

@@ -1,6 +1,9 @@
 using StorageService;
+using StorageService.AsyncDataServices.Abstractions;
+using StorageService.AsyncDataServices.Publishers;
 using StorageService.Data.DbExtensions;
 using StorageService.DI;
+using StorageService.Dtos;
 
 var builder = WebApplication.CreateBuilder(args);
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
@@ -27,6 +30,7 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddEfDbContext(builder.Configuration);
 builder.Services.AddRepositories();
+builder.Services.AddSingleton<IMessageBusPublisher<StoragePublishedDto>, MessageBusStoragePublisher>();
 
 var app = builder.Build();
 

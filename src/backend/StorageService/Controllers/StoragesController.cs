@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using StorageService.Dtos;
 using Microsoft.EntityFrameworkCore;
+using StorageService.AsyncDataServices.Abstractions;
+using StorageService.Constants;
 using StorageService.Models;
 using StorageService.Repositories.Interfaces;
 
@@ -10,13 +12,18 @@ namespace StorageService.Controllers;
 [Route("api/storages")]
 public class StoragesController : ControllerBase
 {
-    public readonly IStorageRepository _storageRepository;
+    private readonly IStorageRepository _storageRepository;
     private readonly HealthState _healthState;
-    
-    public StoragesController(IStorageRepository storageRepository, HealthState healthState)
+    private readonly IMessageBusPublisher<StoragePublishedDto> _messageBusPublisher;
+
+    public StoragesController(
+        IStorageRepository storageRepository, 
+        HealthState healthState, 
+        IMessageBusPublisher<StoragePublishedDto> messageBusPublisher)
     {
         _storageRepository = storageRepository;
         _healthState = healthState;
+        _messageBusPublisher = messageBusPublisher;
     }
 
     [HttpGet]
@@ -45,8 +52,10 @@ public class StoragesController : ControllerBase
         _storageRepository.Create(storage);
         await _storageRepository.SaveChangesAsync();
 
+        var publishedDto = new StoragePublishedDto(storage.Id, MessageBusEvents.Created);
+        _messageBusPublisher.Publish(publishedDto, "storage.created");
+        
         var result = new StorageGetDto(storage);
-
         return CreatedAtRoute("GetById", new { storageId = result.Id }, result);
     }
 

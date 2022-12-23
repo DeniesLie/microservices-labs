@@ -1,4 +1,6 @@
-﻿using ItemService.DTOs;
+﻿using ItemService.AsyncDataServices.Abstractions;
+using ItemService.Constants;
+using ItemService.DTOs;
 using ItemService.Services.Abstract;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,10 +10,12 @@ namespace ItemService.Controllers;
 public class ItemsController : ControllerBase
 {
     private readonly IItemService _itemService;
-    
-    public ItemsController(IItemService itemService)
+    private readonly IMessageBusPublisher<ItemPublishedDto> _messageBus;
+
+    public ItemsController(IItemService itemService, IMessageBusPublisher<ItemPublishedDto> messageBus)
     {
         _itemService = itemService;
+        _messageBus = messageBus;
     }
     
         [HttpGet("{itemId:guid}", Name = "GetById")]
@@ -31,6 +35,10 @@ public class ItemsController : ControllerBase
         public async Task<ActionResult<ItemGetDto>> CreateAsync([FromBody] ItemPostDto itemPostDto)
         {
             var createdItem = await _itemService.CreateAsync(itemPostDto);
+
+            var publisDto = new ItemPublishedDto(createdItem) { Event = MessageBusEvents.Created };
+            
+            _messageBus.Publish(publisDto, "item");
 
             return CreatedAtRoute("GetById", 
                 new { itemId = createdItem.Id }, 

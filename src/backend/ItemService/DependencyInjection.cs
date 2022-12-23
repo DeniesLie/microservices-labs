@@ -1,4 +1,7 @@
-﻿using ItemService.Data;
+﻿using ItemService.AsyncDataServices.Abstractions;
+using ItemService.AsyncDataServices.Publishers;
+using ItemService.Data;
+using ItemService.DTOs;
 using ItemService.Services.Abstract;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,5 +20,6 @@ public static class DependencyInjection
     public static void AddServices(this IServiceCollection serviceCollection)
     {
         serviceCollection.AddTransient<IItemService, Services.Implementation.ItemService>();
+        serviceCollection.AddSingleton<IMessageBusPublisher<ItemPublishedDto>, MessageBusItemPublisher>();
     }
 }

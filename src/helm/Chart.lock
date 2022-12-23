@@ -2,8 +2,5 @@ dependencies:
 - name: common
   repository: file://charts/common
   version: 0.1.0
-- name: rabbitmq
-  repository: https://charts.bitnami.com/bitnami
-  version: 11.2.2
-digest: sha256:b2ff6eb83789229b0471ccc001ee7c4bcf2b17de8c190b3b9cb27af6b06183fb
-generated: "2022-12-18T21:58:18.5721475+02:00"
+digest: sha256:7db88603224eda21d9e93ddefa6ca80e5622eec41eeb186ab454e36cc31197c1
+generated: "2022-12-23T03:53:24.7153617+02:00"

@@ -14,4 +14,9 @@ public class Storage : EntityBase
     {
         Id = dto.Id;
     }
+
+    public Storage(StoragePublishedDto dto)
+    {
+        Id = dto.Id;
+    }
 }
