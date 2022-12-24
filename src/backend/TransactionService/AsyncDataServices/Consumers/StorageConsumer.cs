@@ -8,7 +8,7 @@ public class StorageConsumer : MessageBusConsumer<StoragePublishedDto>
     public StorageConsumer(
         IConfiguration config, 
         ILogger<MessageBusClientBase<StoragePublishedDto>> logger) 
-        : base(config, logger, "storage_queue", "#")
+        : base(config, logger, "storage_queue", "storage")
     {
     }
 }

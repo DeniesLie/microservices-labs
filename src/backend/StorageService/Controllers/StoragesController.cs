@@ -53,7 +53,7 @@ public class StoragesController : ControllerBase
         await _storageRepository.SaveChangesAsync();
 
         var publishedDto = new StoragePublishedDto(storage.Id, MessageBusEvents.Created);
-        _messageBusPublisher.Publish(publishedDto, "storage.created");
+        _messageBusPublisher.Publish(publishedDto, "storage");
         
         var result = new StorageGetDto(storage);
         return CreatedAtRoute("GetById", new { storageId = result.Id }, result);

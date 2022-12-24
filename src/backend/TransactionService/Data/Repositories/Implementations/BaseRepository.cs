@@ -55,9 +55,8 @@ public abstract class BaseRepository<TEntity> : IRepository<TEntity>
         if (!doesEntityExists)
         {
             Insert(entity);
+            await SaveChangesAsync();
         }
-
-        await SaveChangesAsync();
     }
 
     public async Task SaveChangesAsync()

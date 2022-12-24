@@ -8,7 +8,7 @@ public class ItemConsumer : MessageBusConsumer<ItemPublishedDto>
     public ItemConsumer(
         IConfiguration config, 
         ILogger<MessageBusClientBase<ItemPublishedDto>> logger) 
-        : base(config, logger, "item_queue", "#")
+        : base(config, logger, "item_queue", "item")
     {
     }
 }

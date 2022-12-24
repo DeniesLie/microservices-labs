@@ -11,7 +11,7 @@ public class MessageBusConsumer<TMessage> :
     protected readonly string QueueName;
     protected readonly string BindingKey;
 
-    private readonly AsyncEventingBasicConsumer _consumer;
+    private readonly EventingBasicConsumer _consumer;
     
     public MessageBusConsumer(
         IConfiguration config, 
@@ -39,7 +39,7 @@ public class MessageBusConsumer<TMessage> :
                 {"x-queue-type", queueTypeValue}
             });
 
-        _consumer = new AsyncEventingBasicConsumer(Chanel);
+        _consumer = new EventingBasicConsumer(Chanel);
         _consumer.ConsumerTag = Guid.NewGuid().ToString();
     }
 
@@ -54,7 +54,7 @@ public class MessageBusConsumer<TMessage> :
             consumer: _consumer);
     }
     
-    public AsyncEventingBasicConsumer Consumer
+    public EventingBasicConsumer Consumer
     {
         get => _consumer;
     }

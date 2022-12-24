@@ -35,7 +35,7 @@ public abstract class MessageBusClientBase<TMessage>: IDisposable
             Port = RabbitMqPort,
             RequestedConnectionTimeout = 20000,
             UserName = "dev",
-            Password = "3hE769Cna9mW"
+            Password = "YVroDVqKNKG1"
         };
 
         try

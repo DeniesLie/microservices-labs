@@ -5,5 +5,5 @@ namespace TransactionService.AsyncDataServices.Abstractions;
 public interface IMessageBusConsumer<TMessage> : IDisposable
 {
     void Consume();
-    AsyncEventingBasicConsumer Consumer { get;  }
+    EventingBasicConsumer Consumer { get;  }
 }
