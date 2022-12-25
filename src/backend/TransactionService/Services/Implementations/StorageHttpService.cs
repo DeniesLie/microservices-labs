@@ -1,3 +1,5 @@
+using System.Diagnostics;
+using System.Net.Http;
 using TransactionService.Dtos;
 using TransactionService.Models;
 using TransactionService.Services.Interfaces;
@@ -20,5 +22,32 @@ public class StorageHttpService : HttpBaseService, IStorageService
         
         var responseMessage = await httpClient.SendAsync(httpRequest);
         return await DeserializeResponseAsync<StorageGetDto>(responseMessage);
+    }
+
+    public async Task CallBrokenEndpointAsync() 
+    {
+        var httpClient = CreateJsonHttpClient();
+
+        var url = $"{BaseUrl}/brokenEndpoint";
+        var httpRequest = new HttpRequestMessage(HttpMethod.Post, url);
+
+        var responseMessage = await httpClient.SendAsync(httpRequest);
+    }
+
+    public async Task<Tuple<HttpResponseMessage, TimeSpan>> SpeedTestAsync() 
+    {
+        var httpClient = CreateJsonHttpClient();
+        var watch = new Stopwatch();
+
+        var url = $"{BaseUrl}/speedTest";
+        var httpRequest = new HttpRequestMessage(HttpMethod.Get, url);
+
+        watch.Start();
+        var responseMessage = await httpClient.SendAsync(httpRequest);
+        watch.Stop();
+
+        TimeSpan timeElapsed = TimeSpan.FromMilliseconds(watch.ElapsedMilliseconds);
+        
+        return new Tuple<HttpResponseMessage, TimeSpan>(responseMessage, timeElapsed);
     }
 }
