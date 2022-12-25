@@ -36,7 +36,7 @@ public abstract class MessageBusClientBase<TMessage>: IDisposable
             ContinuationTimeout = TimeSpan.FromMilliseconds(20000),
             RequestedConnectionTimeout = TimeSpan.FromMilliseconds(20000),
             UserName = "dev",
-            Password = "YVroDVqKNKG1"
+            Password = "ojcFbiMwdH65"
         };
 
         try
