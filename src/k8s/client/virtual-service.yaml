@@ -1,0 +1,16 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: storage-app-employee-service-virtual
+spec:
+  hosts:
+    - webui-svc
+  http:
+    - route:
+        - destination:
+            host: webui-svc
+      timeout: 10s
+      retries:
+        attempts: 3
+        retryOn: 5xx
+        perTryTimeout: 10s

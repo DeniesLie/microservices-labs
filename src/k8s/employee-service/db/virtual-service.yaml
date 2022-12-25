@@ -1,0 +1,16 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: storage-app-employee-service-mssql-virtual
+spec:
+  hosts:
+    - storage-app-employee-service-mssql
+  http:
+    - route:
+        - destination:
+            host: storage-app-employee-service-mssql
+      timeout: 20s
+      retries:
+        attempts: 3
+        retryOn: 5xx
+        perTryTimeout: 20s

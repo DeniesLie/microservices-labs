@@ -3,7 +3,7 @@ kind: Deployment                             # Deployment - це конфігу�
 metadata:
   name: webui-deployment
 spec:
-  replicas: 2                                # кількість екземплярів Pod, що буде створено цим Deployment
+  replicas: 1                                # кількість екземплярів Pod, що буде створено цим Deployment
   selector:
     matchLabels:
       app: webui                # селектор по якому Deployment зв'язаний з Pod
@@ -13,7 +13,8 @@ spec:
        app: webui               # мітка Pod по якому вона буде зв'язана з Deployment та Service
     spec:
       containers:
-        - image: denysl1enk0/mslabsngclient:0.1
+        - image: denysl1enk0/mslabsngclient:0.4
+          imagePullPolicy: Always
           name: webui           # ім'я контейнеру
           ports:
             - containerPort: 80              # порт по якому можна звертатись до поди

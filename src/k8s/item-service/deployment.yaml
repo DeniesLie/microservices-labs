@@ -13,7 +13,7 @@ spec:
        app: itemservice               # мітка Pod по якому вона буде зв'язана з Deployment та Service
     spec:
       containers:
-        - image: vynnykv/item-service:0.2
+        - image: vynnykv/item-service:0.3
           name: itemservice           # ім'я контейнеру
           readinessProbe:
             httpGet:

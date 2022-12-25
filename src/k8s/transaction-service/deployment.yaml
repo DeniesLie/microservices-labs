@@ -13,7 +13,8 @@ spec:
        app: transactionservice               # мітка Pod по якому вона буде зв'язана з Deployment та Service
     spec:
       containers:
-        - image: denysl1enk0/transactionservice:0.2
+        - image: denysl1enk0/transactionservice:0.4
+          imagePullPolicy: Always
           name: transactionservice
           readinessProbe:
             httpGet:

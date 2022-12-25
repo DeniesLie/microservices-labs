@@ -79,8 +79,8 @@ public class TransactionService : ITransactionService
 
     public async Task<TransactionGetDto> CreateAsync(TransactionPostDto transactionDto)
     {
-        var storage = await _storageService.GetByIdAsync(transactionDto.StorageId);
-        var item = await _itemService.GetByIdAsync(transactionDto.ItemId);
+        var storage = await _storageRepo.GetByIdAsync(transactionDto.StorageId);
+        var item = await _itemRepo.GetByIdAsync(transactionDto.ItemId);
 
         if (storage is null)
             throw new NotFoundException("Storage not found");
@@ -88,9 +88,6 @@ public class TransactionService : ITransactionService
         if (item is null)
             throw new NotFoundException("Item not found");
 
-        await _storageRepo.EnsureEntityUpdatedAsync(new Storage(storage));
-        await _itemRepo.EnsureEntityUpdatedAsync(new Item(item));
-        
         var transaction = new TransactionModel(transactionDto);
             
         _transactionRepo.Insert(transaction);

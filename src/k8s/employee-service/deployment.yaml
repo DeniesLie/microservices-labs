@@ -3,7 +3,7 @@ kind: Deployment                             # Deployment - це конфігу�
 metadata:
   name: employeeservice-deployment
 spec:
-  replicas: 2                                # кількість екземплярів Pod, що буде створено цим Deployment
+  replicas: 1                                # кількість екземплярів Pod, що буде створено цим Deployment
   selector:
     matchLabels:
       app: employeeservice                # селектор по якому Deployment зв'язаний з Pod

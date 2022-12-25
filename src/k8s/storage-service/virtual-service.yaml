@@ -1,0 +1,16 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: storage-app-storage-service-virtual
+spec:
+  hosts:
+    - storage-app-storage-service
+  http:
+    - route:
+        - destination:
+            host: storage-app-storage-service
+      timeout: 10s
+      retries:
+        attempts: 3
+        retryOn: 5xx
+        perTryTimeout: 10s

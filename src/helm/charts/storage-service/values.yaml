@@ -1,4 +1,4 @@
-replicasCount: 1
+replicaCount: 3
 
 image: 
   name: zozuliuk22/storageservice

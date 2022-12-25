@@ -16,4 +16,10 @@ public class Item : EntityBase
         Id = dto.Id;
         Name = dto.Name ?? "";
     }
+
+    public Item(ItemPublishedDto dto)
+    {
+        Id = dto.Id;
+        Name = dto.Name ?? "";
+    }
 }

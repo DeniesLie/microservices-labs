@@ -13,7 +13,7 @@ service:
     - name: http
       port: 80
       targetPort: 80
-
+      
 ingress:
   path: /
   pathType: Prefix

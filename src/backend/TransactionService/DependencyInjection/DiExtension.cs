@@ -1,7 +1,12 @@
 using Microsoft.EntityFrameworkCore;
+using TransactionService.AsyncDataServices.Abstractions;
+using TransactionService.AsyncDataServices.Consumers;
+using TransactionService.BackgroundServices;
 using TransactionService.Data;
 using TransactionService.Data.Repositories.Implementations;
 using TransactionService.Data.Repositories.Interfaces;
+using TransactionService.Dtos;
+using TransactionService.EventProcessors;
 using TransactionService.Services.Implementations;
 using TransactionService.Services.Interfaces;
 
@@ -22,6 +27,10 @@ public static class DiExtension
         services.AddScoped<ITransactionService, Services.Implementations.TransactionService>();
         services.AddScoped<IStorageService, StorageHttpService>();
         services.AddScoped<IItemService, ItemHttpService>();
+        services.AddSingleton<IEventProcessor, EventProcessor>();
+        services.AddSingleton<IMessageBusConsumer<ItemPublishedDto>, ItemConsumer>();
+        services.AddSingleton<IMessageBusConsumer<StoragePublishedDto>, StorageConsumer>();
+        services.AddHostedService<MessageBusListener>();
     }
     
     public static void AddRepositories(this IServiceCollection services)
