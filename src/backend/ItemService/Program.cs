@@ -1,7 +1,24 @@
 using ItemService;
 using ItemService.Data;
+using App.Metrics.AspNetCore;
+using App.Metrics.Formatters.Prometheus;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Logging
+builder.Host.UseMetricsWebTracking()
+    .UseMetrics(opts =>
+    {
+        opts.EndpointOptions = endpointOpts =>
+        {
+            endpointOpts.MetricsTextEndpointOutputFormatter = new MetricsPrometheusTextOutputFormatter();
+            endpointOpts.MetricsEndpointOutputFormatter = new MetricsPrometheusProtobufOutputFormatter();
+            endpointOpts.EnvironmentInfoEndpointEnabled = false;
+        };
+    });
+
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
 
 // Add services to the container.
 

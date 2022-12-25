@@ -1,3 +1,5 @@
+using App.Metrics.AspNetCore;
+using App.Metrics.Formatters.Prometheus;
 using TransactionService.BackgroundServices;
 using TransactionService.Data;
 using TransactionService.Data.PrerpDb;
@@ -13,6 +15,18 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddHealthChecks();
+
+// Logging
+builder.Host.UseMetricsWebTracking()
+    .UseMetrics(opts =>
+    {
+        opts.EndpointOptions = endpointOpts =>
+        {
+            endpointOpts.MetricsTextEndpointOutputFormatter = new MetricsPrometheusTextOutputFormatter();
+            endpointOpts.MetricsEndpointOutputFormatter = new MetricsPrometheusProtobufOutputFormatter();
+            endpointOpts.EnvironmentInfoEndpointEnabled = false;
+        };
+    });
 
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();

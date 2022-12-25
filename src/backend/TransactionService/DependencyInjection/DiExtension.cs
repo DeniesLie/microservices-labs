@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.EntityFrameworkCore;
 using TransactionService.AsyncDataServices.Abstractions;
 using TransactionService.AsyncDataServices.Consumers;
@@ -27,10 +28,14 @@ public static class DiExtension
         services.AddScoped<ITransactionService, Services.Implementations.TransactionService>();
         services.AddScoped<IStorageService, StorageHttpService>();
         services.AddScoped<IItemService, ItemHttpService>();
+        
         services.AddSingleton<IEventProcessor, EventProcessor>();
         services.AddSingleton<IMessageBusConsumer<ItemPublishedDto>, ItemConsumer>();
         services.AddSingleton<IMessageBusConsumer<StoragePublishedDto>, StorageConsumer>();
         services.AddHostedService<MessageBusListener>();
+
+        services.Configure<KestrelServerOptions>(opts => { opts.AllowSynchronousIO = true; });
+        services.AddMetrics();
     }
     
     public static void AddRepositories(this IServiceCollection services)

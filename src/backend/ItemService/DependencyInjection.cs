@@ -4,6 +4,7 @@ using ItemService.Data;
 using ItemService.DTOs;
 using ItemService.Services.Abstract;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 
 namespace ItemService;
 
@@ -21,5 +22,8 @@ public static class DependencyInjection
     {
         serviceCollection.AddTransient<IItemService, Services.Implementation.ItemService>();
         serviceCollection.AddSingleton<IMessageBusPublisher<ItemPublishedDto>, MessageBusItemPublisher>();
+
+        serviceCollection.Configure<KestrelServerOptions>(opts => { opts.AllowSynchronousIO = true; });
+        serviceCollection.AddMetrics();
     }
 }
