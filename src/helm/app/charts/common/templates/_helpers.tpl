@@ -19,3 +19,9 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- define "common.labels" -}}
 {{ include "common.selectorLabels" . }}
 {{- end }}
+
+{{/* Prometheus Annotations */}}
+{{- define "common.prometheusAnnotations" -}}
+prometheus.io/path: "/metrics-text"
+prometheus.io/scrape: "true"
+{{- end }}

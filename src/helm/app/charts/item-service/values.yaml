@@ -2,7 +2,9 @@ replicasCount: 1
 
 image: 
   name: vynnykv/item-service
-  tag: 0.4
+  tag: 0.5
+
+prometheusEnabled: true
 
 containers:
   name: itemservice

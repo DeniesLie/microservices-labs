@@ -10,6 +10,10 @@ apiVersion: v1
 kind: Service
 metadata:
   name: {{ include "common.fullname" .}}
+  annotations:
+  {{- if .Values.prometheusEnabled -}}
+    {{- include "common.prometheusAnnotations" . | nindent 8 }}
+  {{- end }}
 spec:
   type: ClusterIP
   ports:

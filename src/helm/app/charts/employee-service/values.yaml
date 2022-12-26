@@ -1,11 +1,13 @@
-replicaCount: 3
+replicasCount: 1
 
 image: 
-  name: zozuliuk22/storageservice
-  tag: 0.1
+  name: fundowakin/employeeservice
+  tag: latest
+
+prometheusEnabled: true
 
 containers:
-  name: storageservice
+  name: employeeservice
   containerPort: 80
 
 service:
@@ -15,7 +17,7 @@ service:
       targetPort: 80
 
 ingress:
-  path: /api/storageservice(/|$)(.*)
+  path: /api/employeeservice(/|$)(.*)
   pathType: Prefix
   port:
     number: 8080
@@ -23,7 +25,7 @@ ingress:
 secrets:
   SA_PASSWORD: "UGE1NXcwcmQh"
 
-storage-service-mssql:
+employee-service-mssql:
   config:
     saPassword: "Pa55w0rd!"
     
