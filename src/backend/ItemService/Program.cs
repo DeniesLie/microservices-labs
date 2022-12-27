@@ -2,10 +2,29 @@ using ItemService;
 using ItemService.Data;
 using App.Metrics.AspNetCore;
 using App.Metrics.Formatters.Prometheus;
+using Serilog;
+using Serilog.Sinks.Elasticsearch;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Logging
+builder.Host.UseSerilog((context, config) =>
+{
+    config.Enrich.FromLogContext()
+        .Enrich.WithMachineName()
+        .WriteTo.Console()
+        .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri(context.Configuration["Elasticsearch:Uri"]))
+        {
+            IndexFormat = $"{context.Configuration["AppName"]}-logs-{context.HostingEnvironment.EnvironmentName?.ToLower().Replace(".", "-")}-{DateTime.UtcNow:yyyy-MM}",
+            AutoRegisterTemplate = true,
+            NumberOfShards = 2,
+            NumberOfReplicas = 1
+        })
+        .Enrich.WithProperty("Environment", context.HostingEnvironment.EnvironmentName)
+        .ReadFrom.Configuration(context.Configuration);
+});
+
+// Monitoring
 builder.Host.UseMetricsWebTracking()
     .UseMetrics(opts =>
     {
@@ -16,9 +35,6 @@ builder.Host.UseMetricsWebTracking()
             endpointOpts.EnvironmentInfoEndpointEnabled = false;
         };
     });
-
-builder.Logging.ClearProviders();
-builder.Logging.AddConsole();
 
 // Add services to the container.
 

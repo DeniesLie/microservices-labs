@@ -1,5 +1,7 @@
 using App.Metrics.AspNetCore;
 using App.Metrics.Formatters.Prometheus;
+using Serilog;
+using Serilog.Sinks.Elasticsearch;
 using TransactionService.BackgroundServices;
 using TransactionService.Data;
 using TransactionService.Data.PrerpDb;
@@ -17,6 +19,23 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddHealthChecks();
 
 // Logging
+builder.Host.UseSerilog((context, config) =>
+{
+    config.Enrich.FromLogContext()
+        .Enrich.WithMachineName()
+        .WriteTo.Console()
+        .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri(context.Configuration["Elasticsearch:Uri"]))
+        {
+            IndexFormat = $"{context.Configuration["AppName"]}-logs-{context.HostingEnvironment.EnvironmentName?.ToLower().Replace(".", "-")}-{DateTime.UtcNow:yyyy-MM}",
+            AutoRegisterTemplate = true,
+            NumberOfShards = 2,
+            NumberOfReplicas = 1
+        })
+        .Enrich.WithProperty("Environment", context.HostingEnvironment.EnvironmentName)
+        .ReadFrom.Configuration(context.Configuration);
+});
+
+// Monitoring
 builder.Host.UseMetricsWebTracking()
     .UseMetrics(opts =>
     {
@@ -27,9 +46,6 @@ builder.Host.UseMetricsWebTracking()
             endpointOpts.EnvironmentInfoEndpointEnabled = false;
         };
     });
-
-builder.Logging.ClearProviders();
-builder.Logging.AddConsole();
 
 builder.Services.AddCors(options =>
 {
