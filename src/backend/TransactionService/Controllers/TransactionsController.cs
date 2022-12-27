@@ -15,17 +15,20 @@ namespace TransactionService.Controllers
         private readonly IStorageRepository _storageRepo;
         private readonly IItemRepository _itemRepo;
         private readonly ITransactionService _transactionService;
+        private readonly ILogger _logger;
 
         public TransactionsController(
             ITransactionRepository transactionRepo,
             IStorageRepository storageRepo, 
             IItemRepository itemRepo, 
-            ITransactionService transactionService)
+            ITransactionService transactionService,
+            ILogger<TransactionsController> logger)
         {
             _transactionRepo = transactionRepo;
             _storageRepo = storageRepo;
             _itemRepo = itemRepo;
             _transactionService = transactionService;
+            _logger = logger;
         }
 
         [HttpGet("{transactionId:guid}", Name = "GetById")]
@@ -55,6 +58,8 @@ namespace TransactionService.Controllers
         {
             var result = await _transactionService.CreateAsync(transactionDto);
             
+            _logger.LogInformation($"Transaction created. Id: {result.Id}");
+
             return CreatedAtRoute("GetById", 
                 new { transactionId = result.Id }, 
                 result);
@@ -64,6 +69,9 @@ namespace TransactionService.Controllers
         public async Task<ActionResult<TransactionGetDto>> UpdateAsync([FromBody] TransactionUpdateDto transactionDto)
         {
             var result = await _transactionService.UpdateAsync(transactionDto);
+
+            _logger.LogInformation($"Transaction updated. Id: {result.Id}");
+
             return result;
         }
 
@@ -71,6 +79,9 @@ namespace TransactionService.Controllers
         public async Task<IActionResult> DeleteAsync(Guid transactionId)
         {
             await _transactionService.DeleteAsync(transactionId);
+
+            _logger.LogInformation($"Transaction deleted. Id: {transactionId}");
+
             return Ok();
         }
 
@@ -79,6 +90,8 @@ namespace TransactionService.Controllers
         public async Task<IActionResult> TestBrokenEndpointAsync() 
         {
             await _transactionService.TestBrokenEndpointAsync();
+            _logger.LogInformation("Broken endpoint was successfully invoked from transaction service");
+
             return Ok();
         }
     }

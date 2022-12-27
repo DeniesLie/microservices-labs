@@ -11,11 +11,13 @@ namespace EmployeeService.Controllers
     {
         private readonly IEmployeeRepository _employeeRepository;
         private readonly IPositionRepository _positionRepository;
+        private readonly ILogger _logger;
 
-        public EmployeeController(IEmployeeRepository employeeRepository, IPositionRepository positionRepository)
+        public EmployeeController(IEmployeeRepository employeeRepository, IPositionRepository positionRepository, ILogger<EmployeeController> logger)
         {
             _employeeRepository = employeeRepository;
             _positionRepository = positionRepository;
+            _logger = logger;
         }
 
         [HttpGet("{id:Guid}")]
@@ -59,6 +61,9 @@ namespace EmployeeService.Controllers
                 PositionId = position.Id
             };
             _employeeRepository.Insert(employee);
+
+            _logger.LogInformation($"Employee created. Id: {employee.Id}");
+
             return Created("api/employees", employeePostDto);
         }
 
@@ -73,6 +78,9 @@ namespace EmployeeService.Controllers
             employee.PhoneNumber = employeePostDto.PhoneNumber;
             employee.PositionId = employeePostDto.PositionId;
             _employeeRepository.Update(employee);
+
+            _logger.LogInformation($"Employee updated. Id: {employee.Id}");
+
             return Ok();
         }
 
@@ -82,7 +90,11 @@ namespace EmployeeService.Controllers
             var employee = _employeeRepository.Get(id);
             if (employee is null)
                 return NotFound();
+            
             _employeeRepository.Delete(employee);
+
+            _logger.LogInformation($"Employee deleted. Id: {employee.Id}");
+
             return Ok();
         }
     }

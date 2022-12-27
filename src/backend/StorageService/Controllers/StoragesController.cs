@@ -15,15 +15,18 @@ public class StoragesController : ControllerBase
     private readonly IStorageRepository _storageRepository;
     private readonly HealthState _healthState;
     private readonly IMessageBusPublisher<StoragePublishedDto> _messageBusPublisher;
+    private readonly ILogger _logger;
 
     public StoragesController(
         IStorageRepository storageRepository, 
         HealthState healthState, 
-        IMessageBusPublisher<StoragePublishedDto> messageBusPublisher)
+        IMessageBusPublisher<StoragePublishedDto> messageBusPublisher,
+        ILogger<StoragesController> logger)
     {
         _storageRepository = storageRepository;
         _healthState = healthState;
         _messageBusPublisher = messageBusPublisher;
+        _logger = logger;
     }
 
     [HttpGet]
@@ -56,6 +59,9 @@ public class StoragesController : ControllerBase
         _messageBusPublisher.Publish(publishedDto, "storage");
         
         var result = new StorageGetDto(storage);
+
+        _logger.LogInformation($"Storage created. Id: {result.Id}");
+
         return CreatedAtRoute("GetById", new { storageId = result.Id }, result);
     }
 
@@ -71,6 +77,8 @@ public class StoragesController : ControllerBase
         _storageRepository.Update(storage);
         await _storageRepository.SaveChangesAsync();
 
+        _logger.LogInformation($"Storage updated. Id: {storage.Id}");
+
         return new StorageGetDto(storage);
     }
 
@@ -84,6 +92,8 @@ public class StoragesController : ControllerBase
         _storageRepository.Delete(storage);
         await _storageRepository.SaveChangesAsync();
 
+        _logger.LogInformation($"Storage deleted. Id: {storage.Id}");
+
         return Ok();
     }
 
@@ -91,14 +101,24 @@ public class StoragesController : ControllerBase
     public IActionResult BrokenEndpoint()
     {
         _healthState.IsSlowed = true;
+
+        _logger.LogInformation($"BrokenEndpoint invoked. Now 'speedTest' endpoint latency is 10s");
+
         return Ok("Service was successfully broken");
     }
 
     [HttpGet("speedTest")]
     public IActionResult SpeedTest()
     {
-        if (_healthState.IsSlowed)
+        if (_healthState.IsSlowed) 
+        {
+            _logger.LogInformation("'speedTest' endpoint was invoked. Waiting 10s");
             Thread.Sleep(10000);
+        } 
+        else 
+        {
+            _logger.LogInformation("'speedTest' endpoint was invoked. Not waiting");
+        }
 
         return Ok();
     }
