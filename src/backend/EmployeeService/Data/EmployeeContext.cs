@@ -17,9 +17,6 @@ namespace EmployeeService.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-
-            modelBuilder.Entity<Position>().HasData(SeedData.Position);
-            modelBuilder.Entity<Employee>().HasData(SeedData.Employees);
         }
     }
 }
